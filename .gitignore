@@ -1,0 +1,20 @@
+# JUCE-related ignore patterns
+JuceLibraryCode/
+Builds/
+*.jucer
+*.exe
+*.app
+*.dylib
+*.dll
+*.obj
+*.o
+*.a
+*.lib
+*.so
+*.vst
+*.vst3
+*.component
+*.au
+*.zip
+*.log
+*.DS_Store
