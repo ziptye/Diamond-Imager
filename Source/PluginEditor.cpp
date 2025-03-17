@@ -39,10 +39,10 @@ void VectorScopeAudioProcessorEditor::resized()
     int totalHeight = getHeight();
     
     // Leave space for the right panel (1/4 width) and bottom buttons (1/10 height)
-    int scopeWidth = totalWidth * 0.55f;    // 75% of width
-    int scopeHeight = totalHeight * 0.7f;   // 90% of height
+    int scopeWidth = totalWidth * 0.35f;    // 35% of width
+    int scopeHeight = totalHeight * 0.7f;   // 70% of height
     int xOffset = (totalWidth - scopeWidth) / 2 - 128;  // Center horizontally
-    int yOffset = (totalHeight - scopeHeight) / 10 + 3; // Leave space at bottom
+    int yOffset = (totalHeight - scopeHeight) / 10 + 4; // Leave space at bottom
 
     // Sets the vectorscope bounds
     vectorscope.setBounds(xOffset, yOffset, scopeWidth, scopeHeight);

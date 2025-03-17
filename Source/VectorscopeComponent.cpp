@@ -56,7 +56,7 @@ void VectorscopeComponent::paint(juce::Graphics& g)
     float scale = juce::jmin(getWidth(), getHeight()) * 0.45f; // Scale to fit
 
     // Draw grid or axes
-//    g.setColour(juce::Colours::grey.withAlpha(0.3f));
+//    g.setColour(juce::Colours::red);
 //    g.drawLine(centerX, 0, centerX, getHeight(), 1.0f); // Vertical axis (mono reference)
 //    g.drawLine(0, centerY, getWidth(), centerY, 1.0f);  // Horizontal axis
 
