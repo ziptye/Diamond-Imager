@@ -34,6 +34,9 @@ private:
     VectorScopeAudioProcessor& audioProcessor;
     VectorscopeComponent vectorscope;
     
+    int rotation = 100;
+    int width = 100;
+    
     juce::Image background;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VectorScopeAudioProcessorEditor)
