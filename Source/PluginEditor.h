@@ -26,7 +26,7 @@ public:
     void resized() override;
     
     void pushSamples(const float* leftSamples, const float* rightSamples, int numSamples);
-
+    juce::String displayValues (int val);
 
 private:
     // This reference is provided as a quick way for your editor to

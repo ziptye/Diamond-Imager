@@ -36,31 +36,17 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
 //    g.setColour(juce::Colours::red);
 //    g.drawRect(593, 172, 50, 26);
  
-    // Insert spaces between each character
-    juce::String modifiedR = juce::String(rotation);
-    juce::String spacedString;
-    for (int i = 0; i < modifiedR.length(); ++i)
-    {
-        spacedString += modifiedR[i];
-        if (i < modifiedR.length() - 1)
-            spacedString += " "; // Append space between numbers
-    }
+    
+    auto resultRotation = displayValues(width); // Width Value
     g.setFont(juce::Font(font).withHeight(20.0f));
     g.setColour(juce::Colours::black);
-    g.drawText(spacedString, 593, 172, 50, 26, juce::Justification::centred);
+    g.drawText(resultRotation, 593, 172, 50, 26, juce::Justification::centred);
     
     
-    juce::String modifiedW = juce::String(width);
-    juce::String spacedString2;
-    for (int i = 0; i < modifiedW.length(); ++i)
-    {
-        spacedString2 += modifiedW[i];
-        if (i < modifiedW.length() - 1)
-            spacedString2 += " "; // Append space between numbers
-    }
+    auto resultWidth = displayValues(rotation); // Rotation Value
     g.setFont(juce::Font(font).withHeight(20.0f));
     g.setColour(juce::Colours::black);
-    g.drawText(spacedString2, 493, 68, 50, 26, juce::Justification::centred);
+    g.drawText(resultWidth, 493, 68, 50, 26, juce::Justification::centred);
 }
 
 void VectorScopeAudioProcessorEditor::resized()
@@ -82,4 +68,18 @@ void VectorScopeAudioProcessorEditor::resized()
 void VectorScopeAudioProcessorEditor::pushSamples(const float* leftSamples, const float* rightSamples, int numSamples)
 {
     vectorscope.pushSamples(leftSamples, rightSamples, numSamples);
+}
+
+juce::String VectorScopeAudioProcessorEditor::displayValues(int val)
+{
+    juce::String modifiedR = juce::String(val).paddedLeft('0', 3); // Prepends zeros to String.
+    juce::String spacedString;
+    
+    for (int i = 0; i < modifiedR.length(); ++i)
+    {
+        spacedString += modifiedR[i];
+        if (i < modifiedR.length() - 1)
+            spacedString += " "; // Append space between numbers
+    }
+    return spacedString;
 }
