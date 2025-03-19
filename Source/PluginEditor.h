@@ -26,13 +26,16 @@ public:
     void resized() override;
     
     void pushSamples(const float* leftSamples, const float* rightSamples, int numSamples);
-
+    juce::String displayValues (int val);
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     VectorScopeAudioProcessor& audioProcessor;
     VectorscopeComponent vectorscope;
+    
+    int rotation = 100;
+    int width = 100;
     
     juce::Image background;
 
