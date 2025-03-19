@@ -34,8 +34,19 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     g.drawImageAt(background, 0, 0);
     
 //    g.setColour(juce::Colours::red);
-//    g.drawRect(593, 172, 50, 26);
- 
+//    g.drawRect(493, 68, 50, 26); // ROTATION COORDS.
+    
+//    g.setColour(juce::Colours::red);
+//    g.drawRect(593, 172, 50, 26); // WIDTH COORDS,
+    
+//    g.setColour(juce::Colours::red);
+//    g.drawEllipse(93, 330, 31, 31, 2.f); // LEFT COORDS.
+//    
+//    g.setColour(juce::Colours::red);
+//    g.drawEllipse(206, 330, 31, 31, 2.f); // CENTER COORDS.
+//    
+//    g.setColour(juce::Colours::red);
+//    g.drawEllipse(319, 330, 31, 31, 2.f); // RIGHT COORDS.
     
     auto resultRotation = displayValues(width); // Width Value
     g.setFont(juce::Font(font).withHeight(20.0f));
@@ -82,4 +93,29 @@ juce::String VectorScopeAudioProcessorEditor::displayValues(int val)
             spacedString += " "; // Append space between numbers
     }
     return spacedString;
+}
+
+void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
+{
+    // Define clickable areas
+    juce::Rectangle<int> area1(93, 330, 31, 31);  // L
+    juce::Rectangle<int> area2(206, 330, 31, 31); // C
+    juce::Rectangle<int> area3(319, 330, 31, 31); // R
+
+    // Get click position
+    juce::Point<int> clickPos = event.getPosition();
+
+    // Check if the click is inside one of the defined areas
+    if (area1.contains(clickPos))
+    {
+        { DBG("Area 1 Clicked!"); /* Call another function here */ }
+    }
+    else if (area2.contains(clickPos))
+    {
+        { DBG("Area 2 Clicked!"); /* Call another function here */ }
+    }
+    else if (area3.contains(clickPos))
+    {
+        { DBG("Area 3 Clicked!"); /* Call another function here */ }
+    }
 }

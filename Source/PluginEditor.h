@@ -27,7 +27,8 @@ public:
     
     void pushSamples(const float* leftSamples, const float* rightSamples, int numSamples);
     juce::String displayValues (int val);
-
+    
+    void mouseDown(const juce::MouseEvent& event) override;
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
