@@ -39,6 +39,14 @@ private:
     int width = 100;
     
     juce::Image background;
+    
+    bool ledOnL = true;
+    bool ledOnC = true;
+    bool ledOnR = true;
+    
+    juce::Rectangle<int> ledBoundsL {105, 341, 8, 8};
+    juce::Rectangle<int> ledBoundsC {218, 341, 8, 8};
+    juce::Rectangle<int> ledBoundsR {331, 341, 8, 8};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VectorScopeAudioProcessorEditor)
 };

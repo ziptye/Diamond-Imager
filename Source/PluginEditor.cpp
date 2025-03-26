@@ -31,38 +31,25 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     
+    // Draws background image to screen
     g.drawImageAt(background, 0, 0);
     
-//    g.setColour(juce::Colours::red);
-//    g.drawRect(493, 68, 50, 26); // ROTATION COORDS.
     
-//    g.setColour(juce::Colours::red);
-//    g.drawRect(593, 172, 50, 26); // WIDTH COORDS,
+    // Draws LED lights to screen
+    g.setColour(ledOnL ? juce::Colours::red : juce::Colours::darkred);
+    g.fillEllipse(ledBoundsL.toFloat());
     
-//    g.setColour(juce::Colours::limegreen);
-//    g.drawEllipse(93, 330, 31, 31, 2.f); // LEFT COORDS.
-//    
-//    g.setColour(juce::Colours::blue);
-//    g.drawEllipse(206, 330, 31, 31, 2.f); // CENTER COORDS.
-//    
-//    g.setColour(juce::Colours::red);
-//    g.drawEllipse(319, 330, 31, 31, 2.f); // RIGHT COORDS.
+    g.setColour(ledOnC ? juce::Colours::red : juce::Colours::darkred);
+    g.fillEllipse(ledBoundsC.toFloat());
     
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(105, 341, 8, 8); // LEFT LED
-
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(218, 341, 8, 8); // CENTER LED
-
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(331, 341, 8, 8); // RIGHT LED
+    g.setColour(ledOnR ? juce::Colours::red : juce::Colours::darkred);
+    g.fillEllipse(ledBoundsR.toFloat());
     
-    
+    // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value
     g.setFont(juce::Font(font).withHeight(20.0f));
     g.setColour(juce::Colours::black);
     g.drawText(resultRotation, 593, 172, 50, 26, juce::Justification::centred);
-    
     
     auto resultWidth = displayValues(rotation); // Rotation Value
     g.setFont(juce::Font(font).withHeight(20.0f));
@@ -118,14 +105,17 @@ void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
     // Check if the click is inside one of the defined areas
     if (area1.contains(clickPos))
     {
-        { DBG("Area 1 Clicked!"); /* Call another function here */ }
+        ledOnL = !ledOnL;
+        repaint();
     }
     else if (area2.contains(clickPos))
     {
-        { DBG("Area 2 Clicked!"); /* Call another function here */ }
+        ledOnC = !ledOnC;
+        repaint();
     }
     else if (area3.contains(clickPos))
     {
-        { DBG("Area 3 Clicked!"); /* Call another function here */ }
+        ledOnR = !ledOnR;
+        repaint();
     }
 }
