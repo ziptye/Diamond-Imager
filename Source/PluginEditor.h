@@ -35,14 +35,14 @@ private:
     VectorScopeAudioProcessor& audioProcessor;
     VectorscopeComponent vectorscope;
     
-    int rotation = 100;
-    int width = 100;
+    int rotation = 90;
+    int width = 90;
     
     juce::Image background;
     
-    bool ledOnL = true;
-    bool ledOnC = true;
-    bool ledOnR = true;
+    bool ledOnL = false;
+    bool ledOnC = false;
+    bool ledOnR = false;
     
     // Define clickable areas
     juce::Rectangle<int> area1 {93, 330, 31, 31};  // L
@@ -53,6 +53,12 @@ private:
     juce::Rectangle<int> ledBoundsL {105, 341, 8, 8}; // L
     juce::Rectangle<int> ledBoundsC {218, 341, 8, 8}; // C
     juce::Rectangle<int> ledBoundsR {331, 341, 8, 8}; // R
+    
+    // Deine the clickable areas for W/R
+    juce::Rectangle<int> rotationUp {510, 38, 17, 17}; // Rotation Up
+    juce::Rectangle<int> rotationDown {510, 106, 17, 17}; // Rotation Down
+    juce::Rectangle<int> widthUp {609, 143, 17, 17}; // Width Up
+    juce::Rectangle<int> widthDown {609, 211, 17, 17}; // Width Down
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VectorScopeAudioProcessorEditor)
 };

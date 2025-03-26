@@ -16,7 +16,7 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     addAndMakeVisible(vectorscope);
     setSize (700, 395);
     
-    background = juce::ImageCache::getFromMemory(BinaryData::FDImager4_png, BinaryData::FDImager4_pngSize);
+    background = juce::ImageCache::getFromMemory(BinaryData::FDImager5_png, BinaryData::FDImager5_pngSize);
     
 }
 
@@ -29,7 +29,9 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
 {
     auto font = juce::Typeface::createSystemTypefaceFor(BinaryData::JetBrainsMonoRegular_ttf, BinaryData::JetBrainsMonoRegular_ttfSize);
     
+     
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    
     
     // Draws background image to screen
     g.drawImageAt(background, 0, 0);
@@ -44,6 +46,7 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     
     g.setColour(ledOnR ? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsR.toFloat());
+    
     
     // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value
@@ -111,6 +114,26 @@ void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
     else if (area3.contains(clickPos))
     {
         ledOnR = !ledOnR;
+        repaint();
+    }
+    else if (rotationUp.contains(clickPos) && (rotation < 100))
+    {
+        rotation += 1;
+        repaint();
+    }
+    else if (rotationDown.contains(clickPos) && (rotation > 0))
+    {
+        rotation -= 1;
+        repaint();
+    }
+    else if (widthUp.contains(clickPos) && (width < 100))
+    {
+        width += 1;
+        repaint();
+    }
+    else if (widthDown.contains(clickPos) && (width > 0))
+    {
+        width -= 1;
         repaint();
     }
 }
