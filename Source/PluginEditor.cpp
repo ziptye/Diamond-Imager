@@ -29,11 +29,24 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
 {
     auto font = juce::Typeface::createSystemTypefaceFor(BinaryData::JetBrainsMonoRegular_ttf, BinaryData::JetBrainsMonoRegular_ttfSize);
     
+     
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    
     
     // Draws background image to screen
     g.drawImageAt(background, 0, 0);
     
+    g.setColour(juce::Colours::red); // Rotation Up
+    g.drawRect(510, 38, 17, 17);
+    
+    g.setColour(juce::Colours::red); // Rotation Down
+    g.drawRect(510, 106, 17, 17);
+    
+    g.setColour(juce::Colours::blue); // Width Up
+    g.drawRect(609, 143, 17, 17);
+    
+    g.setColour(juce::Colours::blue); // Width Down
+    g.drawRect(609, 211, 17, 17);
     
     // Draws LED lights to screen
     g.setColour(ledOnL ? juce::Colours::red : juce::Colours::darkred);
@@ -44,6 +57,7 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     
     g.setColour(ledOnR ? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsR.toFloat());
+    
     
     // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value
