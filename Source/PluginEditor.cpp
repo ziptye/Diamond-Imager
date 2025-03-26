@@ -16,7 +16,7 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     addAndMakeVisible(vectorscope);
     setSize (700, 395);
     
-    background = juce::ImageCache::getFromMemory(BinaryData::FDImager4_png, BinaryData::FDImager4_pngSize);
+    background = juce::ImageCache::getFromMemory(BinaryData::FDImager5_png, BinaryData::FDImager5_pngSize);
     
 }
 
@@ -29,19 +29,30 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
 {
     auto font = juce::Typeface::createSystemTypefaceFor(BinaryData::JetBrainsMonoRegular_ttf, BinaryData::JetBrainsMonoRegular_ttfSize);
     
+     
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     
+    
+    // Draws background image to screen
     g.drawImageAt(background, 0, 0);
     
-//    g.setColour(juce::Colours::red);
-//    g.drawRect(593, 172, 50, 26);
- 
     
+    // Draws LED lights to screen
+    g.setColour(ledOnL ? juce::Colours::red : juce::Colours::darkred);
+    g.fillEllipse(ledBoundsL.toFloat());
+    
+    g.setColour(ledOnC ? juce::Colours::red : juce::Colours::darkred);
+    g.fillEllipse(ledBoundsC.toFloat());
+    
+    g.setColour(ledOnR ? juce::Colours::red : juce::Colours::darkred);
+    g.fillEllipse(ledBoundsR.toFloat());
+    
+    
+    // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value
     g.setFont(juce::Font(font).withHeight(20.0f));
     g.setColour(juce::Colours::black);
     g.drawText(resultRotation, 593, 172, 50, 26, juce::Justification::centred);
-    
     
     auto resultWidth = displayValues(rotation); // Rotation Value
     g.setFont(juce::Font(font).withHeight(20.0f));
@@ -82,4 +93,47 @@ juce::String VectorScopeAudioProcessorEditor::displayValues(int val)
             spacedString += " "; // Append space between numbers
     }
     return spacedString;
+}
+
+void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
+{
+    // Get click position
+    juce::Point<int> clickPos = event.getPosition();
+
+    // Check if the click is inside one of the defined areas
+    if (area1.contains(clickPos))
+    {
+        ledOnL = !ledOnL;
+        repaint();
+    }
+    else if (area2.contains(clickPos))
+    {
+        ledOnC = !ledOnC;
+        repaint();
+    }
+    else if (area3.contains(clickPos))
+    {
+        ledOnR = !ledOnR;
+        repaint();
+    }
+    else if (rotationUp.contains(clickPos) && (rotation < 100))
+    {
+        rotation += 1;
+        repaint();
+    }
+    else if (rotationDown.contains(clickPos) && (rotation > 0))
+    {
+        rotation -= 1;
+        repaint();
+    }
+    else if (widthUp.contains(clickPos) && (width < 100))
+    {
+        width += 1;
+        repaint();
+    }
+    else if (widthDown.contains(clickPos) && (width > 0))
+    {
+        width -= 1;
+        repaint();
+    }
 }
