@@ -39,14 +39,24 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
 //    g.setColour(juce::Colours::red);
 //    g.drawRect(593, 172, 50, 26); // WIDTH COORDS,
     
-//    g.setColour(juce::Colours::red);
+//    g.setColour(juce::Colours::limegreen);
 //    g.drawEllipse(93, 330, 31, 31, 2.f); // LEFT COORDS.
 //    
-//    g.setColour(juce::Colours::red);
+//    g.setColour(juce::Colours::blue);
 //    g.drawEllipse(206, 330, 31, 31, 2.f); // CENTER COORDS.
 //    
 //    g.setColour(juce::Colours::red);
 //    g.drawEllipse(319, 330, 31, 31, 2.f); // RIGHT COORDS.
+    
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(105, 341, 8, 8); // LEFT LED
+
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(218, 341, 8, 8); // CENTER LED
+
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(331, 341, 8, 8); // RIGHT LED
+    
     
     auto resultRotation = displayValues(width); // Width Value
     g.setFont(juce::Font(font).withHeight(20.0f));
