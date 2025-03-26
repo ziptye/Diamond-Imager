@@ -44,9 +44,15 @@ private:
     bool ledOnC = true;
     bool ledOnR = true;
     
-    juce::Rectangle<int> ledBoundsL {105, 341, 8, 8};
-    juce::Rectangle<int> ledBoundsC {218, 341, 8, 8};
-    juce::Rectangle<int> ledBoundsR {331, 341, 8, 8};
+    // Define clickable areas
+    juce::Rectangle<int> area1 {93, 330, 31, 31};  // L
+    juce::Rectangle<int> area2 {206, 330, 31, 31}; // C
+    juce::Rectangle<int> area3 {319, 330, 31, 31}; // R
+    
+    // Define LED lights
+    juce::Rectangle<int> ledBoundsL {105, 341, 8, 8}; // L
+    juce::Rectangle<int> ledBoundsC {218, 341, 8, 8}; // C
+    juce::Rectangle<int> ledBoundsR {331, 341, 8, 8}; // R
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VectorScopeAudioProcessorEditor)
 };

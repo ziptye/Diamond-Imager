@@ -94,11 +94,6 @@ juce::String VectorScopeAudioProcessorEditor::displayValues(int val)
 
 void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
 {
-    // Define clickable areas
-    juce::Rectangle<int> area1(93, 330, 31, 31);  // L
-    juce::Rectangle<int> area2(206, 330, 31, 31); // C
-    juce::Rectangle<int> area3(319, 330, 31, 31); // R
-
     // Get click position
     juce::Point<int> clickPos = event.getPosition();
 
