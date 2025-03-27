@@ -152,8 +152,7 @@ void VectorScopeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
 
     auto* leftChannel = buffer.getWritePointer(0); // Always use channel 0
     auto* rightChannel = (numChannels > 1) ? buffer.getWritePointer(1) : leftChannel; // Use left for mono
-
-//    pushSamplesToEditor(leftChannel, rightChannel, numSamples);
+    
 
     bool soloLeft = *ledOnLParam > 0.5f;   // Treat as bool (0.0f = false, 1.0f = true)
     bool soloCenter = *ledOnCParam > 0.5f;
