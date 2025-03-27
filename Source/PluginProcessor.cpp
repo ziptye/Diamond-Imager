@@ -162,6 +162,10 @@ void VectorScopeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     {
         buffer.clear(channel, 0, numSamples);
     }
+    
+#if JUCE_DEBUG
+    protectYourEars(buffer);
+#endif
 }
 
 void VectorScopeAudioProcessor::pushSamplesToEditor(const float* leftSamples, const float* rightSamples, int numSamples)
