@@ -50,12 +50,12 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     
     // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value
-    g.setFont(juce::Font(font).withHeight(20.0f));
+    g.setFont(juce::FontOptions(font).withHeight(20.0f));
     g.setColour(juce::Colours::black);
     g.drawText(resultRotation, 593, 172, 50, 26, juce::Justification::centred);
     
     auto resultWidth = displayValues(rotation); // Rotation Value
-    g.setFont(juce::Font(font).withHeight(20.0f));
+    g.setFont(juce::FontOptions(font).withHeight(20.0f));
     g.setColour(juce::Colours::black);
     g.drawText(resultWidth, 493, 68, 50, 26, juce::Justification::centred);
 }
