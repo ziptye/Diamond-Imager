@@ -15,7 +15,7 @@
 //==============================================================================
 /**
 */
-class VectorScopeAudioProcessorEditor  : public juce::AudioProcessorEditor
+class VectorScopeAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     VectorScopeAudioProcessorEditor (VectorScopeAudioProcessor&);
@@ -40,10 +40,6 @@ private:
     
     juce::Image background;
     
-    bool ledOnL = false;
-    bool ledOnC = false;
-    bool ledOnR = false;
-    
     // Define clickable areas
     juce::Rectangle<int> area1 {93, 330, 31, 31};  // L
     juce::Rectangle<int> area2 {206, 330, 31, 31}; // C
@@ -59,6 +55,9 @@ private:
     juce::Rectangle<int> rotationDown {510, 106, 17, 17}; // Rotation Down
     juce::Rectangle<int> widthUp {609, 143, 17, 17}; // Width Up
     juce::Rectangle<int> widthDown {609, 211, 17, 17}; // Width Down
+    
+    // Listener callback
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VectorScopeAudioProcessorEditor)
 };
