@@ -56,11 +56,19 @@ public:
     
     //================================
     void pushSamplesToEditor(const float* leftSamples, const float* rightSamples, int numSamples);
+    
+    juce::AudioProcessorValueTreeState apvts;
+    
+    std::atomic<float>* ledOnLParam = nullptr;
+    std::atomic<float>* ledOnCParam = nullptr;
+    std::atomic<float>* ledOnRParam = nullptr;
 
 private:
     juce::AudioBuffer<float> processorBuffer;
     int writePosition = 0;
     static constexpr int bufferSize = 1024;
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VectorScopeAudioProcessor)
 };

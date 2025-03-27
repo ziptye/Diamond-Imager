@@ -19,11 +19,15 @@ VectorScopeAudioProcessor::VectorScopeAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), apvts(*this, nullptr, "Diamond Imager Params", createParameterLayout())
 #endif
 {
     processorBuffer.setSize(2, bufferSize);
     processorBuffer.clear();
+    
+    ledOnLParam = apvts.getRawParameterValue("soloLeft");
+    ledOnCParam = apvts.getRawParameterValue("soloCenter");
+    ledOnRParam = apvts.getRawParameterValue("soloRight");
 }
 
 VectorScopeAudioProcessor::~VectorScopeAudioProcessor()
@@ -140,23 +144,48 @@ void VectorScopeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     auto numChannels = buffer.getNumChannels();
 
     // Ensure we have at least 1 channel
-    if (numChannels == 0) return;
-
-    auto* leftChannel = buffer.getWritePointer(0); // Always use channel 0
-    const float* rightChannel = (numChannels > 1) ? buffer.getWritePointer(1) : leftChannel; // Use left for mono
-
-    pushSamplesToEditor(leftChannel, rightChannel, numSamples);
-
-    // Pass-through audio (required for Logic validation)
-    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+    if (numChannels == 0)
     {
-        auto* channelData = buffer.getWritePointer(channel);
-        for (int sample = 0; sample < numSamples; ++sample)
-        {
-            channelData[sample] = channelData[sample]; // No processing, just pass-through
-        }
+        DBG("!!! WARNING: NUMCHANNELS == 0 !!!");
+        return;
     }
 
+    auto* leftChannel = buffer.getWritePointer(0); // Always use channel 0
+    auto* rightChannel = (numChannels > 1) ? buffer.getWritePointer(1) : leftChannel; // Use left for mono
+
+//    pushSamplesToEditor(leftChannel, rightChannel, numSamples);
+
+    bool soloLeft = *ledOnLParam > 0.5f;   // Treat as bool (0.0f = false, 1.0f = true)
+    bool soloCenter = *ledOnCParam > 0.5f;
+    bool soloRight = *ledOnRParam > 0.5f;
+    bool anySoloActive = soloLeft || soloCenter || soloRight;
+
+    if (anySoloActive)
+    {
+        for (int sample = 0; sample < numSamples; ++sample)
+        {
+            float leftSample = leftChannel[sample];
+            float rightSample = (numChannels > 1) ? rightChannel[sample] : leftSample;
+            float centerSample = (leftSample + rightSample) * 0.5f;
+
+            float leftOutput = 0.0f;
+            float rightOutput = 0.0f;
+
+            if (soloLeft) leftOutput += leftSample;
+            if (soloCenter)
+            {
+                leftOutput += centerSample;
+                rightOutput += centerSample;
+            }
+            if (soloRight) rightOutput += rightSample;
+
+            leftChannel[sample] = leftOutput;
+            if (numChannels > 1) rightChannel[sample] = rightOutput;
+        }
+    }
+    
+    pushSamplesToEditor(leftChannel, rightChannel, numSamples);
+    
     // Clear unused output channels if more outputs than inputs
     for (int channel = numChannels; channel < getTotalNumOutputChannels(); ++channel)
     {
@@ -213,6 +242,16 @@ void VectorScopeAudioProcessor::setStateInformation (const void* data, int sizeI
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout VectorScopeAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID("soloLeft", 1), "Solo Left", false));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID("soloCenter", 1), "Solo Center", false));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID("soloRight", 1), "Solo Right", false));
+    
+    return {    params.begin(), params.end()    };
 }
 
 //==============================================================================

@@ -18,10 +18,22 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     
     background = juce::ImageCache::getFromMemory(BinaryData::FDImager5_png, BinaryData::FDImager5_pngSize);
     
+    // Register this editor as a listener to the APVTS
+    audioProcessor.apvts.addParameterListener("soloLeft", this);
+    audioProcessor.apvts.addParameterListener("soloCenter", this);
+    audioProcessor.apvts.addParameterListener("soloRight", this);
+
+    // Ensure editor is repaintable when parameters change
+    setRepaintsOnMouseActivity(true);
+    
 }
 
 VectorScopeAudioProcessorEditor::~VectorScopeAudioProcessorEditor()
 {
+    // Remove listener on destruction
+    audioProcessor.apvts.removeParameterListener("soloLeft", this);
+    audioProcessor.apvts.removeParameterListener("soloCenter", this);
+    audioProcessor.apvts.removeParameterListener("soloRight", this);
 }
 
 //==============================================================================
@@ -38,13 +50,13 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     
     
     // Draws LED lights to screen
-    g.setColour(ledOnL ? juce::Colours::red : juce::Colours::darkred);
+    g.setColour(audioProcessor.ledOnLParam-> load() > 0.5f ? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsL.toFloat());
     
-    g.setColour(ledOnC ? juce::Colours::red : juce::Colours::darkred);
+    g.setColour(audioProcessor.ledOnCParam-> load() > 0.5f? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsC.toFloat());
     
-    g.setColour(ledOnR ? juce::Colours::red : juce::Colours::darkred);
+    g.setColour(audioProcessor.ledOnRParam-> load() > 0.5f ? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsR.toFloat());
     
     
@@ -103,18 +115,18 @@ void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
     // Check if the click is inside one of the defined areas
     if (area1.contains(clickPos))
     {
-        ledOnL = !ledOnL;
-        repaint();
+        bool currentState = audioProcessor.ledOnLParam->load() > 0.5f;
+        audioProcessor.apvts.getParameter("soloLeft")->setValueNotifyingHost(currentState ? 0.0f : 1.0f);
     }
     else if (area2.contains(clickPos))
     {
-        ledOnC = !ledOnC;
-        repaint();
+        bool currentState = audioProcessor.ledOnCParam->load() > 0.5f;
+        audioProcessor.apvts.getParameter("soloCenter")->setValueNotifyingHost(currentState ? 0.0f : 1.0f);
     }
     else if (area3.contains(clickPos))
     {
-        ledOnR = !ledOnR;
-        repaint();
+        bool currentState = audioProcessor.ledOnRParam->load() > 0.5f;
+        audioProcessor.apvts.getParameter("soloRight")->setValueNotifyingHost(currentState ? 0.0f : 1.0f);
     }
     else if (rotationUp.contains(clickPos) && (rotation < 100))
     {
@@ -136,4 +148,9 @@ void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
         width -= 1;
         repaint();
     }
+}
+
+void VectorScopeAudioProcessorEditor::parameterChanged(const juce::String &parameterID, float newValue)
+{
+    repaint();
 }
