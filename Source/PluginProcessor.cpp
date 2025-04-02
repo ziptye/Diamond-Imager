@@ -171,7 +171,7 @@ void VectorScopeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
             float rightOutput = 0.0f;
 
             if (soloLeft) leftOutput += leftSample;
-            if (soloCenter)
+            if (soloCenter && !soloLeft && !soloRight)
             {
                 leftOutput += centerSample;
                 rightOutput += centerSample;
