@@ -66,8 +66,17 @@ void VectorscopeComponent::paint(juce::Graphics& g)
 
     for (int i = 0; i < bufferSize; ++i)
     {
-        float left = sampleBuffer.getSample(0, i);  // Left channel
-        float right = sampleBuffer.getSample(1, i); // Right channel
+        
+        /*
+         ===============================================================================================
+         TODO: For some reason, switching the left and right channels below fixes the issue where
+         the channels were being drawn backwards when soloed. Need to figure out why this was happenning.
+         Also need to check to make sure this issue isn't present in the processBlock().
+         ===============================================================================================
+        */
+        
+        float right = sampleBuffer.getSample(0, i);  // Left channel
+        float left = sampleBuffer.getSample(1, i); // Right channel
 
         // Rotated coordinates (45-degree turn)
         float stereoDiff = (left - right) * 0.7071f; // ≈ 1/√2, horizontal spread
