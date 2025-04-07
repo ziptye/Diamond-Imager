@@ -27,6 +27,8 @@ void VectorscopeComponent::pushSamples(const float* leftSamples, const float* ri
 {
 //    // Ensure we don't exceed buffer size
     int samplesToWrite = juce::jmin(numSamples, bufferSize - writePosition);
+    
+//    DBG(static_cast<juce::String>(samplesToWrite) + " -- CURRENT BUFFER SIZE --"); //1024
 
     // Copy samples into the buffer
     sampleBuffer.copyFrom(0, writePosition, leftSamples, samplesToWrite); // Left channel
@@ -66,8 +68,16 @@ void VectorscopeComponent::paint(juce::Graphics& g)
 
     for (int i = 0; i < bufferSize; ++i)
     {
-        float left = sampleBuffer.getSample(0, i);  // Left channel
-        float right = sampleBuffer.getSample(1, i); // Right channel
+        
+        /*
+         ===============================================================================================
+         TODO: For some reason, switching the left and right channels below fixes the issue where
+         the channels were being drawn backwards when soloed. Need to figure out why this was happenning.
+         ===============================================================================================
+        */
+        
+        float right = sampleBuffer.getSample(0, i);  // Left channel
+        float left = sampleBuffer.getSample(1, i); // Right channel
 
         // Rotated coordinates (45-degree turn)
         float stereoDiff = (left - right) * 0.7071f; // ≈ 1/√2, horizontal spread

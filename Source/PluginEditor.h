@@ -30,13 +30,11 @@ public:
     
     void mouseDown(const juce::MouseEvent& event) override;
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
     VectorScopeAudioProcessor& audioProcessor;
     VectorscopeComponent vectorscope;
     
-    int rotation = 90;
-    int width = 90;
+    int rotation = 0;
+    int width = 100;
     
     juce::Image background;
     
@@ -50,7 +48,7 @@ private:
     juce::Rectangle<int> ledBoundsC {218, 341, 8, 8}; // C
     juce::Rectangle<int> ledBoundsR {331, 341, 8, 8}; // R
     
-    // Deine the clickable areas for W/R
+    // Define the clickable areas for W/R
     juce::Rectangle<int> rotationUp {510, 38, 17, 17}; // Rotation Up
     juce::Rectangle<int> rotationDown {510, 106, 17, 17}; // Rotation Down
     juce::Rectangle<int> widthUp {609, 143, 17, 17}; // Width Up

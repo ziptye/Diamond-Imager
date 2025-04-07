@@ -138,7 +138,7 @@ void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
         rotation -= 1;
         repaint();
     }
-    else if (widthUp.contains(clickPos) && (width < 100))
+    else if (widthUp.contains(clickPos) && (width < 200))
     {
         width += 1;
         repaint();
