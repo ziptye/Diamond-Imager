@@ -1,6 +1,6 @@
 # Diamond Imager v0.1.4
 
-![Image](https://github.com/user-attachments/assets/dff579dc-5112-474a-869a-630fbf3cd45b)
+![Image](https://github.com/user-attachments/assets/604f27fa-38f2-4827-8c12-5ba06a55fdc7)
 
 ## Release Notes
 
