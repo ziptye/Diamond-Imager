@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <JUCEHeader.h>
+#include <JuceHeader.h>
 
 class VectorscopeComponent : public juce::Component, public juce::Timer
 {

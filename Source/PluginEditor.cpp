@@ -16,7 +16,7 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     addAndMakeVisible(vectorscope);
     setSize (700, 395);
     
-    background = juce::ImageCache::getFromMemory(BinaryData::FDImager5_png, BinaryData::FDImager5_pngSize);
+    background = juce::ImageCache::getFromMemory(BinaryData::FDImager7_png, BinaryData::FDImager7_pngSize);
     
     // Register this editor as a listener to the APVTS
     audioProcessor.apvts.addParameterListener("soloLeft", this);
@@ -59,6 +59,77 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour(audioProcessor.ledOnRParam-> load() > 0.5f ? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsR.toFloat());
     
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(led1L.toFloat());
+    
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(led1R.toFloat());
+    
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(led2L.toFloat());
+    
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(led2R.toFloat());
+    
+    g.setColour(juce::Colours::orange);
+    g.fillEllipse(led3L.toFloat());
+    
+    g.setColour(juce::Colours::orange);
+    g.fillEllipse(led3R.toFloat());
+    
+    g.setColour(juce::Colours::orange);
+    g.fillEllipse(led4L.toFloat());
+    
+    g.setColour(juce::Colours::orange);
+    g.fillEllipse(led4R.toFloat());
+    
+    g.setColour(juce::Colours::yellow);
+    g.fillEllipse(led5L.toFloat());
+    
+    g.setColour(juce::Colours::yellow);
+    g.fillEllipse(led5R.toFloat());
+    
+    g.setColour(juce::Colours::yellow);
+    g.fillEllipse(led6L.toFloat());
+    
+    g.setColour(juce::Colours::yellow);
+    g.fillEllipse(led6R.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led7L.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led7R.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led8L.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led8R.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led9L.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led9R.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led10L.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led10R.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led11L.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led11R.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led12L.toFloat());
+    
+    g.setColour(juce::Colours::limegreen);
+    g.fillEllipse(led12R.toFloat());
     
     // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value

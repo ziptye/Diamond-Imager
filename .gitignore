@@ -18,3 +18,5 @@ Builds/
 *.zip
 *.log
 *.DS_Store
+*.zshrc
+*.txt
