@@ -16,7 +16,7 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     addAndMakeVisible(vectorscope);
     setSize (700, 395);
     
-    background = juce::ImageCache::getFromMemory(BinaryData::FDImager5_png, BinaryData::FDImager5_pngSize);
+    background = juce::ImageCache::getFromMemory(BinaryData::FDImager6_png, BinaryData::FDImager6_pngSize);
     
     // Register this editor as a listener to the APVTS
     audioProcessor.apvts.addParameterListener("soloLeft", this);

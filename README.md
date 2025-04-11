@@ -1,8 +1,14 @@
-# Diamond Imager v0.1.3
+# Diamond Imager v0.1.4
 
-![Image](https://github.com/user-attachments/assets/73bce1ac-ff3b-456c-8c83-0ddbc7530988)
+![Image](https://github.com/user-attachments/assets/dff579dc-5112-474a-869a-630fbf3cd45b)
 
 ## Release Notes
+
+### v0.1.3
+
+- Adds stereo correlation meter (functionality to follow shortly)
+- Fixes display bug
+- Updates background image to v0.1.4
 
 ### v0.1.3
 
