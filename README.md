@@ -21,6 +21,13 @@
 - Initial Release
 
 
+## Future Tasks:
+
+- [ ] BPM-based Rotation Parameter
+- [ ] Stereo Correlation Meter + Functionality
+- [ ] Stereo Width Functionality
+
+
 ## License
 
 This software is proprietary and may not be copied, modified, or distributed without permission. Please refer to the [LICENSE.txt](LICENSE.txt) file for the full terms and conditions.
