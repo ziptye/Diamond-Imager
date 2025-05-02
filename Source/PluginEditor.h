@@ -15,7 +15,7 @@
 //==============================================================================
 /**
 */
-class VectorScopeAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::AudioProcessorValueTreeState::Listener
+class VectorScopeAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::AudioProcessorValueTreeState::Listener, private juce::Timer
 {
 public:
     VectorScopeAudioProcessorEditor (VectorScopeAudioProcessor&, std::atomic<float>&);
@@ -32,6 +32,8 @@ public:
 private:
     VectorScopeAudioProcessor& audioProcessor;
     VectorscopeComponent vectorscope;
+    
+    void timerCallback() override;
     
     int rotation = 0;
     int width = 100;
@@ -106,6 +108,8 @@ private:
     };
     
     std::atomic<float>& correlationValue;
+    juce::SmoothedValue<float> smoothedCorrelation { 0.0f };
+    float displayVal = 0.0f;
     
     
     //==========================================================================

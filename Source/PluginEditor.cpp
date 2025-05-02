@@ -26,6 +26,10 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     // Ensure editor is repaintable when parameters change
     setRepaintsOnMouseActivity(true);
     
+    smoothedCorrelation.reset(60.0, 0.07);
+    startTimer(30);
+    
+    
 }
 
 VectorScopeAudioProcessorEditor::~VectorScopeAudioProcessorEditor()
@@ -59,8 +63,8 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour(audioProcessor.ledOnRParam-> load() > 0.5f ? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsR.toFloat());
     
-    float correlation = audioProcessor.correlationValue.load();
-    int numLit = juce::jlimit(0, 12, static_cast<int>(std::round((correlation + 1.0f) * 6.0f)));
+    
+    int numLit = juce::jlimit(0, 12, static_cast<int>(std::round((displayVal + 1.0f) * 6.0f)));
     
     // Left LEDs
     for (int i = 0; i < ledsL.size(); ++i)
@@ -188,6 +192,14 @@ void VectorScopeAudioProcessorEditor::mouseDown(const juce::MouseEvent& event)
         width -= 1;
         repaint();
     }
+}
+
+void VectorScopeAudioProcessorEditor::timerCallback()
+{
+    float rawCorrelation = audioProcessor.correlationValue.load();
+    smoothedCorrelation.setTargetValue(rawCorrelation);
+    displayVal = smoothedCorrelation.getNextValue();
+    repaint();
 }
 
 void VectorScopeAudioProcessorEditor::parameterChanged(const juce::String &parameterID, float newValue)
