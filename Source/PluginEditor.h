@@ -56,7 +56,6 @@ private:
     
     //==========================================================================
     // STEREO CORRLEATION METER LEDS
-    // TODO: NEED TO REFACTOR THIS CODE... THIS IS JUST BAD LOL :)
     
     juce::Rectangle<int> led1L {478, 255, 8, 8};
     juce::Rectangle<int> led1R {478, 268, 8, 8};
