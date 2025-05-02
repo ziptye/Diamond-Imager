@@ -62,6 +62,10 @@ public:
     std::atomic<float>* ledOnLParam = nullptr;
     std::atomic<float>* ledOnCParam = nullptr;
     std::atomic<float>* ledOnRParam = nullptr;
+    
+    std::atomic<float> correlationValue { 1.0f };
+    
+    float calculateStereoCorrelartion (const float* left, const float* right, int numSamples);
 
 private:
     juce::AudioBuffer<float> processorBuffer;

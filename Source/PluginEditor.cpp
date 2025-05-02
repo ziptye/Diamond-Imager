@@ -10,8 +10,8 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAudioProcessor& p, std::atomic<float>& correlationRef)
+: AudioProcessorEditor (&p), audioProcessor (p), correlationValue(correlationRef)
 {
     addAndMakeVisible(vectorscope);
     setSize (700, 395);
@@ -59,77 +59,98 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour(audioProcessor.ledOnRParam-> load() > 0.5f ? juce::Colours::red : juce::Colours::darkred);
     g.fillEllipse(ledBoundsR.toFloat());
     
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(led1L.toFloat());
+    float correlation = audioProcessor.correlationValue.load();
+    int numLit = juce::jlimit(0, 12, static_cast<int>(std::round((correlation + 1.0f) * 6.0f)));
     
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(led1R.toFloat());
+    for (int i = 0; i < ledsL.size(); ++i)
+    {
+        if (i < numLit)
+        {
+            if (i < 2) g.setColour(juce::Colours::red);
+            else if (i < 4) g.setColour(juce::Colours::orange);
+            else if (i < 6) g.setColour(juce::Colours::yellow);
+            else g.setColour(juce::Colours::limegreen);
+
+            g.fillEllipse(ledsL[i].toFloat());
+        }
+        else
+        {
+            g.setColour(juce::Colours::black.withAlpha(0.2f)); // off state
+            g.fillEllipse(ledsL[i].toFloat());
+        }
+    }
     
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(led2L.toFloat());
-    
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(led2R.toFloat());
-    
-    g.setColour(juce::Colours::orange);
-    g.fillEllipse(led3L.toFloat());
-    
-    g.setColour(juce::Colours::orange);
-    g.fillEllipse(led3R.toFloat());
-    
-    g.setColour(juce::Colours::orange);
-    g.fillEllipse(led4L.toFloat());
-    
-    g.setColour(juce::Colours::orange);
-    g.fillEllipse(led4R.toFloat());
-    
-    g.setColour(juce::Colours::yellow);
-    g.fillEllipse(led5L.toFloat());
-    
-    g.setColour(juce::Colours::yellow);
-    g.fillEllipse(led5R.toFloat());
-    
-    g.setColour(juce::Colours::yellow);
-    g.fillEllipse(led6L.toFloat());
-    
-    g.setColour(juce::Colours::yellow);
-    g.fillEllipse(led6R.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led7L.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led7R.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led8L.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led8R.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led9L.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led9R.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led10L.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led10R.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led11L.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led11R.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led12L.toFloat());
-    
-    g.setColour(juce::Colours::limegreen);
-    g.fillEllipse(led12R.toFloat());
+//    g.setColour(juce::Colours::red);
+//    g.fillEllipse(led1L.toFloat());
+//    
+//    g.setColour(juce::Colours::red);
+//    g.fillEllipse(led1R.toFloat());
+//    
+//    g.setColour(juce::Colours::red);
+//    g.fillEllipse(led2L.toFloat());
+//    
+//    g.setColour(juce::Colours::red);
+//    g.fillEllipse(led2R.toFloat());
+//    
+//    g.setColour(juce::Colours::orange);
+//    g.fillEllipse(led3L.toFloat());
+//    
+//    g.setColour(juce::Colours::orange);
+//    g.fillEllipse(led3R.toFloat());
+//    
+//    g.setColour(juce::Colours::orange);
+//    g.fillEllipse(led4L.toFloat());
+//    
+//    g.setColour(juce::Colours::orange);
+//    g.fillEllipse(led4R.toFloat());
+//    
+//    g.setColour(juce::Colours::yellow);
+//    g.fillEllipse(led5L.toFloat());
+//    
+//    g.setColour(juce::Colours::yellow);
+//    g.fillEllipse(led5R.toFloat());
+//    
+//    g.setColour(juce::Colours::yellow);
+//    g.fillEllipse(led6L.toFloat());
+//    
+//    g.setColour(juce::Colours::yellow);
+//    g.fillEllipse(led6R.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led7L.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led7R.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led8L.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led8R.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led9L.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led9R.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led10L.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led10R.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led11L.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led11R.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led12L.toFloat());
+//    
+//    g.setColour(juce::Colours::limegreen);
+//    g.fillEllipse(led12R.toFloat());
     
     // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value
