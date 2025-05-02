@@ -179,6 +179,8 @@ void VectorScopeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     
     pushSamplesToEditor(leftChannel, rightChannel, numSamples);
     
+    correlationValue.store(calculateStereoCorrelartion(leftChannel, rightChannel, numSamples));
+    
     // Clear unused output channels if more outputs than inputs
     for (int channel = numChannels; channel < getTotalNumOutputChannels(); ++channel)
     {
@@ -220,7 +222,7 @@ bool VectorScopeAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* VectorScopeAudioProcessor::createEditor()
 {
-    return new VectorScopeAudioProcessorEditor (*this);
+    return new VectorScopeAudioProcessorEditor (*this, correlationValue);
 }
 
 //==============================================================================
@@ -245,6 +247,26 @@ juce::AudioProcessorValueTreeState::ParameterLayout VectorScopeAudioProcessor::c
     params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID("soloRight", 1), "Solo Right", false));
     
     return {    params.begin(), params.end()    };
+}
+
+float VectorScopeAudioProcessor::calculateStereoCorrelartion(const float *left, const float *right, int numSamples)
+{
+    if (numSamples <= 0) return 1.0f;
+    
+    double sumLL = 0.0, sumRR = 0.0, sumLR = 0.0;
+    
+    for (int i = 0; i < numSamples; ++i)
+    {
+        sumLL += left[i] * left[i];
+        sumRR += right[i] * right[i];
+        sumLR += left[i] * right[i];
+    }
+    
+    double denom = std::sqrt(sumLL * sumRR);
+    if (denom == 0.0) return 1.0f;
+    
+    return static_cast<float>(sumLR / denom);
+    
 }
 
 //==============================================================================

@@ -18,7 +18,7 @@
 class VectorScopeAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::AudioProcessorValueTreeState::Listener
 {
 public:
-    VectorScopeAudioProcessorEditor (VectorScopeAudioProcessor&);
+    VectorScopeAudioProcessorEditor (VectorScopeAudioProcessor&, std::atomic<float>&);
     ~VectorScopeAudioProcessorEditor() override;
 
     //==============================================================================
@@ -93,6 +93,20 @@ private:
     
     juce::Rectangle<int> led12L {651, 255, 8, 8};
     juce::Rectangle<int> led12R {651, 268, 8, 8};
+    
+    std::vector<juce::Rectangle<int>> ledsL =
+    {
+        led1L, led2L, led3L, led4L, led5L, led6L,
+        led7L, led8L, led9L, led10L, led11L, led12L
+    };
+    
+    std::vector<juce::Rectangle<int>> ledsR =
+    {
+        led1R, led2R, led3R, led4R, led5R, led6R,
+        led7R, led8R, led9R, led10R, led11R, led12R
+    };
+    
+    std::atomic<float>& correlationValue;
     
     
     //==========================================================================
