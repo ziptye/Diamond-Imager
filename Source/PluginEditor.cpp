@@ -27,6 +27,7 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     setRepaintsOnMouseActivity(true);
     
     smoothedCorrelation.reset(60.0, 0.07);
+    smoothedCorrelation.setCurrentAndTargetValue(0.0f);
     startTimer(30);
     
     

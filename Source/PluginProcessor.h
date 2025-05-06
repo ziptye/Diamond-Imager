@@ -63,7 +63,7 @@ public:
     std::atomic<float>* ledOnCParam = nullptr;
     std::atomic<float>* ledOnRParam = nullptr;
     
-    std::atomic<float> correlationValue { 1.0f };
+    std::atomic<float> correlationValue { 0.0f };
     
     float calculateStereoCorrelartion (const float* left, const float* right, int numSamples);
 
