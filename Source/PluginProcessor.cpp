@@ -263,7 +263,7 @@ float VectorScopeAudioProcessor::calculateStereoCorrelartion(const float *left, 
     }
     
     double denom = std::sqrt(sumLL * sumRR);
-    if (denom == 0.0) return 1.0f;
+    if (denom == 0.0) return 0.0f;
     
     return static_cast<float>(sumLR / denom);
     
