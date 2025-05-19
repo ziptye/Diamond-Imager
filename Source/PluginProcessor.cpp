@@ -242,9 +242,14 @@ void VectorScopeAudioProcessor::setStateInformation (const void* data, int sizeI
 juce::AudioProcessorValueTreeState::ParameterLayout VectorScopeAudioProcessor::createParameterLayout()
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID("soloLeft", 1), "Solo Left", false));
-    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID("soloCenter", 1), "Solo Center", false));
-    params.push_back(std::make_unique<juce::AudioParameterBool>(juce::ParameterID("soloRight", 1), "Solo Right", false));
+    
+    auto soloLParamID = juce::ParameterID("soloLeft", 1);
+    auto soloCParamID = juce::ParameterID("soloCenter", 1);
+    auto soloRParamID = juce::ParameterID("soloRight", 1);
+    
+    params.push_back(std::make_unique<juce::AudioParameterBool>(soloLParamID, "Solo Left", false));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(soloCParamID, "Solo Center", false));
+    params.push_back(std::make_unique<juce::AudioParameterBool>(soloRParamID, "Solo Right", false));
     
     return {    params.begin(), params.end()    };
 }

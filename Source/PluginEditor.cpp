@@ -39,6 +39,8 @@ VectorScopeAudioProcessorEditor::~VectorScopeAudioProcessorEditor()
     audioProcessor.apvts.removeParameterListener("soloLeft", this);
     audioProcessor.apvts.removeParameterListener("soloCenter", this);
     audioProcessor.apvts.removeParameterListener("soloRight", this);
+    
+    stopTimer();
 }
 
 //==============================================================================
