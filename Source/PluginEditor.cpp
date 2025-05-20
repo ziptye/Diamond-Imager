@@ -106,6 +106,71 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
             g.fillEllipse(ledsR[i].toFloat());
         }
     }
+//    int numLit = juce::jlimit(1, 6, static_cast<int>(std::round(std::abs(displayVal) * 6.0f)));
+//
+//    if (displayVal < 0.0f)
+//    {
+//        int numLit = juce::jlimit(0, 6, static_cast<int>(std::round(std::abs(displayVal) * 6.0f)));
+//
+//        for (int i = 0; i < 6; ++i)
+//        {
+//            if (i < numLit)
+//            {
+//                if (i < 2)       g.setColour(juce::Colours::red);       // LEDs 0–1
+//                else if (i < 4)  g.setColour(juce::Colours::orange);    // LEDs 2–3
+//                else             g.setColour(juce::Colours::yellow);    // LEDs 4–5
+//
+//                g.fillEllipse(ledsL[i].toFloat());
+//            }
+//            else
+//            {
+//                g.setColour(juce::Colours::black.withAlpha(0.2f));
+//                g.fillEllipse(ledsL[i].toFloat());
+//            }
+//        }
+//
+//
+//        // Turn off the right-side LEDs (positive)
+//        for (int i = 6; i < 12; ++i)
+//        {
+//            g.setColour(juce::Colours::black.withAlpha(0.2f));
+//            g.fillEllipse(ledsL[i].toFloat());
+//            g.fillEllipse(ledsR[i].toFloat());
+//        }
+//    }
+//
+//    else if (displayVal > 0.0f)
+//    {
+//        for (int i = 6; i < 12; ++i)
+//        {
+//            if ((i - 6) < numLit)
+//            {
+//                g.setColour(juce::Colours::limegreen);
+//                g.fillEllipse(ledsL[i].toFloat());
+//                g.fillEllipse(ledsR[i].toFloat());
+//            }
+//            else
+//            {
+//                g.setColour(juce::Colours::black.withAlpha(0.2f));
+//                g.fillEllipse(ledsL[i].toFloat());
+//                g.fillEllipse(ledsR[i].toFloat());
+//            }
+//        }
+//
+//        // Turn off negative side LEDs (0–5)
+//        for (int i = 0; i < 6; ++i)
+//        {
+//            g.setColour(juce::Colours::black.withAlpha(0.2f));
+//            g.fillEllipse(ledsL[i].toFloat());
+//            g.fillEllipse(ledsR[i].toFloat());
+//        }
+//    }
+    
+//    DBG("displayVal: " << displayVal << ", numLit: " << numLit);
+
+
+
+
     
     // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value

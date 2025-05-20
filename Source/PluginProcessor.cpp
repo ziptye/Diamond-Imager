@@ -179,7 +179,7 @@ void VectorScopeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     
     pushSamplesToEditor(leftChannel, rightChannel, numSamples);
     
-    correlationValue.store(calculateStereoCorrelartion(leftChannel, rightChannel, numSamples));
+    correlationValue.store(calculateStereoCorrelation(leftChannel, rightChannel, numSamples));
     
     // Clear unused output channels if more outputs than inputs
     for (int channel = numChannels; channel < getTotalNumOutputChannels(); ++channel)
@@ -254,7 +254,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout VectorScopeAudioProcessor::c
     return {    params.begin(), params.end()    };
 }
 
-float VectorScopeAudioProcessor::calculateStereoCorrelartion(const float *left, const float *right, int numSamples)
+float VectorScopeAudioProcessor::calculateStereoCorrelation(const float *left, const float *right, int numSamples)
 {
     if (numSamples <= 0) return 1.0f;
     
