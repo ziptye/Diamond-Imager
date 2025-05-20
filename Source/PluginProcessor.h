@@ -65,7 +65,7 @@ public:
     
     std::atomic<float> correlationValue { 0.0f };
     
-    float calculateStereoCorrelartion (const float* left, const float* right, int numSamples);
+    float calculateStereoCorrelation (const float* left, const float* right, int numSamples);
 
 private:
     juce::AudioBuffer<float> processorBuffer;
