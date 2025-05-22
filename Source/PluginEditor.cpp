@@ -16,7 +16,7 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     addAndMakeVisible(vectorscope);
     setSize (700, 395);
     
-    background = juce::ImageCache::getFromMemory(BinaryData::FDImager7_png, BinaryData::FDImager7_pngSize);
+    background = juce::ImageCache::getFromMemory(BinaryData::FDImager8_png, BinaryData::FDImager8_pngSize);
     
     // Register this editor as a listener to the APVTS
     audioProcessor.apvts.addParameterListener("soloLeft", this);
@@ -29,8 +29,6 @@ VectorScopeAudioProcessorEditor::VectorScopeAudioProcessorEditor (VectorScopeAud
     smoothedCorrelation.reset(60.0, 0.07);
     smoothedCorrelation.setCurrentAndTargetValue(0.0f);
     startTimer(30);
-    
-    
 }
 
 VectorScopeAudioProcessorEditor::~VectorScopeAudioProcessorEditor()
@@ -51,10 +49,8 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
      
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     
-    
     // Draws background image to screen
     g.drawImageAt(background, 0, 0);
-    
     
     // Draws LED lights to screen
     g.setColour(audioProcessor.ledOnLParam-> load() > 0.5f ? juce::Colours::red : juce::Colours::darkred);
@@ -67,111 +63,82 @@ void VectorScopeAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillEllipse(ledBoundsR.toFloat());
     
     
-    int numLit = juce::jlimit(0, 12, static_cast<int>(std::round((displayVal + 1.0f) * 6.0f)));
+    // Calculate number of LEDs to light
+    int numLit = juce::jlimit(0, 6, static_cast<int>(std::round(std::abs(displayVal) * 6.0f)));
     
-    // Left LEDs
-    for (int i = 0; i < ledsL.size(); ++i)
+    // Handle negative correlation
+    if (displayVal < 0.0f)
     {
-        if (i < numLit)
+        for (int i = 0; i < 6; ++i)
         {
-            if (i < 2) g.setColour(juce::Colours::red);
-            else if (i < 4) g.setColour(juce::Colours::orange);
-            else if (i < 6) g.setColour(juce::Colours::yellow);
-            else g.setColour(juce::Colours::limegreen);
-
-            g.fillEllipse(ledsL[i].toFloat());
+            int ledIndex = 5 - i; // Reverse index: i=0 -> ledIndex=5, i=1 -> ledIndex=4, etc.
+            if (i < numLit)
+            {
+                if (ledIndex < 3)
+                {
+                    g.setColour(juce::Colours::red); // LEDs 0–2
+                }
+                else if (ledIndex < 5)
+                {
+                    g.setColour(juce::Colours::orange); // LEDs 3–4
+                }
+                else
+                {
+                    g.setColour(juce::Colours::yellow); // LEDs 5–6
+                }
+            }
+            else
+            {
+                g.setColour(juce::Colours::black.withAlpha(0.2f));
+            }
+            g.fillEllipse(ledsL[ledIndex].toFloat());
+            g.fillEllipse(ledsR[ledIndex].toFloat());
         }
-        else
-        {
-            g.setColour(juce::Colours::black.withAlpha(0.2f)); // off state
-            g.fillEllipse(ledsL[i].toFloat());
-        }
-    }
-    
-    // Right LEDs
-    for (int i = 0; i < ledsR.size(); ++i)
-    {
-        if (i < numLit)
-        {
-            if (i < 2) g.setColour(juce::Colours::red);
-            else if (i < 4) g.setColour(juce::Colours::orange);
-            else if (i < 6) g.setColour(juce::Colours::yellow);
-            else g.setColour(juce::Colours::limegreen);
 
+        // Turn off positive side LEDs (6–11)
+        for (int i = 6; i < 12; ++i)
+        {
+            g.setColour(juce::Colours::black.withAlpha(0.2f));
+            g.fillEllipse(ledsL[i].toFloat());
             g.fillEllipse(ledsR[i].toFloat());
         }
-        else
+    }
+    // Handle positive correlation
+    else if (displayVal > 0.0f)
+    {
+        for (int i = 6; i < 12; ++i)
         {
-            g.setColour(juce::Colours::black.withAlpha(0.2f)); // off state
+            if (i - 6 < numLit)
+            {
+                g.setColour(juce::Colours::limegreen); // LEDs 6–11
+            }
+            else
+            {
+                g.setColour(juce::Colours::black.withAlpha(0.2f));
+            }
+            g.fillEllipse(ledsL[i].toFloat());
+            g.fillEllipse(ledsR[i].toFloat());
+        }
+
+        // Turn off negative side LEDs (0–5)
+        for (int i = 0; i < 6; ++i)
+        {
+            g.setColour(juce::Colours::black.withAlpha(0.2f));
+            g.fillEllipse(ledsL[i].toFloat());
             g.fillEllipse(ledsR[i].toFloat());
         }
     }
-//    int numLit = juce::jlimit(1, 6, static_cast<int>(std::round(std::abs(displayVal) * 6.0f)));
-//
-//    if (displayVal < 0.0f)
-//    {
-//        int numLit = juce::jlimit(0, 6, static_cast<int>(std::round(std::abs(displayVal) * 6.0f)));
-//
-//        for (int i = 0; i < 6; ++i)
-//        {
-//            if (i < numLit)
-//            {
-//                if (i < 2)       g.setColour(juce::Colours::red);       // LEDs 0–1
-//                else if (i < 4)  g.setColour(juce::Colours::orange);    // LEDs 2–3
-//                else             g.setColour(juce::Colours::yellow);    // LEDs 4–5
-//
-//                g.fillEllipse(ledsL[i].toFloat());
-//            }
-//            else
-//            {
-//                g.setColour(juce::Colours::black.withAlpha(0.2f));
-//                g.fillEllipse(ledsL[i].toFloat());
-//            }
-//        }
-//
-//
-//        // Turn off the right-side LEDs (positive)
-//        for (int i = 6; i < 12; ++i)
-//        {
-//            g.setColour(juce::Colours::black.withAlpha(0.2f));
-//            g.fillEllipse(ledsL[i].toFloat());
-//            g.fillEllipse(ledsR[i].toFloat());
-//        }
-//    }
-//
-//    else if (displayVal > 0.0f)
-//    {
-//        for (int i = 6; i < 12; ++i)
-//        {
-//            if ((i - 6) < numLit)
-//            {
-//                g.setColour(juce::Colours::limegreen);
-//                g.fillEllipse(ledsL[i].toFloat());
-//                g.fillEllipse(ledsR[i].toFloat());
-//            }
-//            else
-//            {
-//                g.setColour(juce::Colours::black.withAlpha(0.2f));
-//                g.fillEllipse(ledsL[i].toFloat());
-//                g.fillEllipse(ledsR[i].toFloat());
-//            }
-//        }
-//
-//        // Turn off negative side LEDs (0–5)
-//        for (int i = 0; i < 6; ++i)
-//        {
-//            g.setColour(juce::Colours::black.withAlpha(0.2f));
-//            g.fillEllipse(ledsL[i].toFloat());
-//            g.fillEllipse(ledsR[i].toFloat());
-//        }
-//    }
-    
-//    DBG("displayVal: " << displayVal << ", numLit: " << numLit);
-
-
-
-
-    
+    // Handle zero correlation: turn off all LEDs
+    else
+    {
+        for (int i = 0; i < 12; ++i)
+        {
+            g.setColour(juce::Colours::black.withAlpha(0.2f));
+            g.fillEllipse(ledsL[i].toFloat());
+            g.fillEllipse(ledsR[i].toFloat());
+        }
+    }
+        
     // Draws W/R values to screen
     auto resultRotation = displayValues(width); // Width Value
     g.setFont(juce::FontOptions(font).withHeight(20.0f));
