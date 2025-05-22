@@ -1,8 +1,14 @@
-# Diamond Imager v0.1.4
+# Diamond Imager v0.1.5
 
-![Image](https://github.com/user-attachments/assets/604f27fa-38f2-4827-8c12-5ba06a55fdc7)
+![Image](https://github.com/user-attachments/assets/b34c73d2-eab8-477c-bc03-aef206d6c9ec)
 
 ## Release Notes
+
+### v0.1.5
+
+- Adds stereo correlation meter functionality
+- Fixes display bug in correlation meter
+- Updates background image to v0.1.5
 
 ### v0.1.4
 
@@ -24,7 +30,7 @@
 ## Future Tasks:
 
 - [ ] BPM-based Rotation Parameter
-- [ ] Stereo Correlation Meter + Functionality
+- [x] Stereo Correlation Meter + Functionality
 - [ ] Stereo Width Functionality
 
 
